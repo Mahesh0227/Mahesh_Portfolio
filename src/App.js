@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./App.css";
 import { FaEnvelope, FaLinkedin, FaGithub } from "react-icons/fa";
+import { FaBars, FaTimes } from "react-icons/fa";
+
 // ── TypedText Component ──────────────────────────────────────────────────
 function TypedText({ strings = [] }) {
   const [displayedText, setDisplayedText] = useState("");
@@ -117,6 +119,7 @@ function ParticleCanvas() {
 function Nav({ active, setActive }) {
   const links = ["home", "about", "skills", "projects", "experience", "contact"];
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 60);
@@ -126,15 +129,19 @@ function Nav({ active, setActive }) {
 
   const scrollTo = (id) => {
     setActive(id);
+    setMenuOpen(false); // close menu on click
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
     <nav className={`nav ${scrolled ? "nav-scrolled" : ""}`}>
       <div className="nav-logo" onClick={() => scrollTo("home")}>
-        Portfolio
-      </div>
-      <ul className="nav-links">
+  <span className="typing-logo">Mahesh's Portfolio</span>
+  <span className="cursor">|</span>
+</div>
+
+      {/* Desktop Menu */}
+      <ul className="nav-links desktop">
         {links.map((l) => (
           <li
             key={l}
@@ -145,6 +152,24 @@ function Nav({ active, setActive }) {
           </li>
         ))}
       </ul>
+
+      {/* Mobile Icon */}
+      <div className="menu-icon" onClick={() => setMenuOpen(!menuOpen)}>
+        {menuOpen ? <FaTimes /> : <FaBars />}
+      </div>
+
+      {/* Mobile Menu */}
+      <div className={`mobile-menu ${menuOpen ? "open" : ""}`}>
+        {links.map((l) => (
+          <div
+            key={l}
+            className={`mobile-link ${active === l ? "active" : ""}`}
+            onClick={() => scrollTo(l)}
+          >
+            {l.charAt(0).toUpperCase() + l.slice(1)}
+          </div>
+        ))}
+      </div>
     </nav>
   );
 }
