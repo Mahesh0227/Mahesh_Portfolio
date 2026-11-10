@@ -222,3 +222,54 @@ a.c-row:hover{color:var(--accent)}
   .o1,.o2,.o3{display:none}
 }
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+
+/* PROJECT INTERFACE PREVIEW */
+button.thumb{border:0;padding:0;width:100%;cursor:pointer;font:inherit;display:block}
+.thumb.has-shot{display:flex;align-items:flex-end;justify-content:center;padding-top:14px}
+.thumb.has-shot .browser{width:86%;height:100%;border-radius:12px 12px 0 0;transition:transform .4s}
+.project:hover .thumb.has-shot .browser{transform:translateY(-6px) scale(1.02)}
+.browser{background:#fff;border-radius:12px;box-shadow:0 14px 30px rgba(80,60,160,.22);overflow:hidden;display:flex;flex-direction:column;text-align:left}
+.browser-bar{display:flex;align-items:center;gap:.6rem;padding:.4rem .6rem;border-bottom:1px solid var(--line);background:#f6f4fc;flex:none}
+.browser-bar .dots{display:flex;gap:4px}
+.browser-bar .dots i{width:6px;height:6px;border-radius:50%;background:#d9d6e8}
+.browser-bar .addr{flex:1;font-size:.62rem;color:#7a7592;background:#fff;border-radius:999px;padding:.12rem .6rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.browser-view{position:relative;flex:1;min-height:0;overflow:hidden;background:#fff}
+.browser-view .fallback{position:absolute;inset:0}
+.shot{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top;background:#fff}
+.view-badge{position:absolute;right:10px;bottom:10px;background:rgba(20,16,50,.82);color:#fff;font-size:.7rem;font-weight:600;padding:.3rem .7rem;border-radius:999px;opacity:0;transform:translateY(6px);transition:.25s}
+.project:hover .view-badge,.thumb:focus-visible .view-badge{opacity:1;transform:none}
+.modal-back{position:fixed;inset:0;z-index:1000;background:rgba(15,12,40,.62);backdrop-filter:blur(6px);display:grid;place-items:center;padding:1rem}
+.modal{width:min(1100px,100%);max-height:92vh;background:var(--bg,#fff);border-radius:20px;padding:1rem;display:flex;flex-direction:column;gap:.8rem;box-shadow:0 30px 80px rgba(0,0,0,.35)}
+.modal-head{display:flex;justify-content:space-between;align-items:center;gap:.8rem;flex-wrap:wrap}
+.modal-head h3{font-size:1.1rem}
+.modal-head small{color:var(--accent);font-weight:600}
+.modal-actions{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.modal .browser{height:min(66vh,640px);border:1px solid var(--line);box-shadow:none}
+.modal .browser-view{overflow:auto}
+.modal .shot-lg{position:static;height:auto;width:100%;object-fit:initial}
+.live-frame{width:100%;height:100%;border:0;display:block}
+.frame-note{position:absolute;left:0;right:0;bottom:0;margin:0;padding:.4rem .8rem;font-size:.72rem;background:rgba(20,16,50,.8);color:#fff;text-align:center}
+@media(max-width:760px){.thumb.has-shot .browser{width:92%}.modal{padding:.7rem;border-radius:16px}.view-badge{opacity:1;transform:none}}
+
+/* PROJECT CARD ALIGNMENT */
+.grid-3{align-items:stretch}
+.project .thumb{flex:none;height:190px}
+.project>.project-body{margin-inline:.55rem;display:flex;flex-direction:column;gap:.8rem;flex:1}
+.project>.project-body>*{margin-inline:0}
+.project h3{line-height:1.25}
+.project-top{min-height:2.9rem}
+.project p{flex:1 1 auto;min-height:5.2rem}
+.project .chips{margin-top:auto;min-height:4.3rem;align-content:flex-start}
+.project .plinks{min-height:1.4rem}
+/* lone last card (7 projects) spans full row, horizontal */
+@media(min-width:601px){
+  .grid-3>.project:last-child:nth-child(odd){grid-column:1/-1;flex-direction:row;gap:1.4rem;padding:.8rem}
+  .grid-3>.project:last-child:nth-child(odd)>.project-body{margin-inline:0;padding:.3rem .5rem .3rem 0}
+  .grid-3>.project:last-child:nth-child(odd) .thumb{width:42%;height:auto;min-height:210px}
+}
+@media(min-width:1001px){
+  .grid-3>.project:last-child:nth-child(odd){grid-column:auto}
+  .grid-3>.project:last-child:nth-child(3n+1){grid-column:1/-1}
+  .grid-3>.project:last-child:nth-child(3n+1):nth-child(odd){grid-column:1/-1}
+  .grid-3>.project:last-child:nth-child(3n+2),.grid-3>.project:last-child:nth-child(3n){grid-column:auto;flex-direction:column;padding:.8rem .8rem 1.3rem;gap:.8rem}
+}
