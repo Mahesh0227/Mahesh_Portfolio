@@ -94,8 +94,7 @@ const PROJECTS = [
     title: "NRK Travels", kind: "Booking Website", grad: ["#dfe8ff", "#c9b8ff"], Icons: [SiReact, SiVite, SiTailwindcss],
     description: "Booking website with SabPaisa payments, plus SEO and mobile performance improvements. Built end to end as a freelance project.",
     tags: ["React", "Vite", "Tailwind CSS", "SabPaisa"],
-    slug: "nrk-travels", preview: "https://www.nrktravels.in/",
-    links: [{ label: "Visit Site", url: "https://www.nrktravels.in/" }],
+    links: [{ label: "Visit Site", url: "https://nrktravels.in" }],
   },
   {
     title: "BSH Taxi Services", kind: "Booking Website", grad: ["#ffe3d6", "#e3c9ff"], Icons: [SiReact, SiWhatsapp, SiGmail],
@@ -113,13 +112,6 @@ const PROJECTS = [
       { label: "Live", url: "https://exp.bshtaxiservices.com/" },
       { label: "GitHub", url: "https://github.com/Mahesh0227/BSH_Accounts" },
     ],
-  },
-  {
-    title: "NRK Fleet Management", kind: "Fleet & Trip Management", grad: ["#d9e6ff", "#d6f3e6"], Icons: [SiReact, SiNodedotjs, SiMysql],
-    description: "Professional fleet and trip management system for NRK Travels to manage vehicles, trips and day-to-day accounts in one place.",
-    tags: ["Fleet Management", "Trips", "Accounts", "Dashboard"],
-    slug: "nrk-fleet", mock: "fleet", preview: "https://nrktravelsaccounts.com/",
-    links: [{ label: "Live", url: "https://nrktravelsaccounts.com/" }],
   },
   {
     title: "Medha XL Admin Portal", kind: "Admin Dashboard", grad: ["#e0f0d4", "#bfe0ff"], Icons: [SiSpringboot, SiTailwindcss, SiJavascript],
@@ -166,11 +158,13 @@ const EXPERIENCES = [
   {
     role: "Freelance Developer (Part-time)", company: "NRK Travels and BSH Taxi Services", duration: "2026 – Present", current: true,
     groups: [
-      { heading: "", points: [
-        "NRK Travels (nrktravels.in, nrktravelsaccounts.com): booking website with React, Vite and Tailwind CSS; SabPaisa payments; SEO and mobile performance improvements.",
-        "BSH Taxi Services (bshtaxiservices.com, bshaccounts.in): booking website with Cashfree payments and automated WhatsApp and email notifications for trip assignment, start and cancellation.",
-        "Responsibilities across both: frontend, backend, database, deployment, debugging and testing.",
-      ] },
+      {
+        heading: "", points: [
+          "NRK Travels (nrktravels.in, nrktravelsaccounts.com): booking website with React, Vite and Tailwind CSS; SabPaisa payments; SEO and mobile performance improvements.",
+          "BSH Taxi Services (bshtaxiservices.com, bshaccounts.in): booking website with Cashfree payments and automated WhatsApp and email notifications for trip assignment, start and cancellation.",
+          "Responsibilities across both: frontend, backend, database, deployment, debugging and testing.",
+        ]
+      },
     ],
     skills: ["React", "Vite", "Tailwind CSS", "SabPaisa", "Cashfree", "WhatsApp API"],
   },
@@ -379,118 +373,6 @@ function Skills() {
   );
 }
 
-// ── Live interface preview ──────────────────────────────────────────────────
-// Image order: 1) your own screenshot in /public/projects/<slug>.png (best quality)
-//              2) auto screenshot of the live site  3) fallback mock-up
-const shotUrl = (url, w = 900) => `https://s0.wp.com/mshots/v1/${encodeURIComponent(url)}?w=${w}&h=${Math.round(w * 0.625)}`;
-const hostOf = (url) => url.replace(/^https?:\/\//, "").replace(/\/$/, "");
-
-function Shot({ p, w = 900, className = "", fallback = null, auto = true }) {
-  const [src, setSrc] = useState(`/projects/${p.slug}.png`);
-  const [stage, setStage] = useState(0); // 0 local file, 1 auto screenshot, 2 failed
-  const [tries, setTries] = useState(0);
-  const timer = useRef(null);
-  useEffect(() => () => clearTimeout(timer.current), []);
-  const onError = () => {
-    if (stage === 0 && auto) { setStage(1); setSrc(shotUrl(p.preview, w)); }
-    else setStage(2);
-  };
-  // mShots first returns a small "generating" placeholder; retry until the real image is ready
-  const onLoad = (e) => {
-    if (stage === 1 && e.target.naturalWidth < w * 0.6) {
-      if (tries >= 6) return setStage(2);
-      timer.current = setTimeout(() => { setTries(tries + 1); setSrc(`${shotUrl(p.preview, w)}&r=${tries + 1}`); }, 2500);
-    }
-  };
-  if (stage === 2) return fallback;
-  return <img className={`shot ${className}`} src={src} alt={`${p.title} interface`} onError={onError} onLoad={onLoad} />;
-}
-
-function ModalFallback({ p }) {
-  return (
-    <div className="modal-fallback">
-      <div className="mock-icons">{p.Icons.map((I, k) => <I key={k} />)}</div>
-      <h4>{p.title}</h4>
-      <p>{p.description}</p>
-      <div className="chips">{p.tags.map((t) => <span key={t}>{t}</span>)}</div>
-      <a className="btn dark" href={p.preview} target="_blank" rel="noopener noreferrer">Open live site <FaExternalLinkAlt /></a>
-    </div>
-  );
-}
-
-function FleetMock() {
-  const nav = ["Dashboard", "Vehicles", "Drivers", "Trips", "Accounts", "Reports"];
-  const stats = [["Vehicles", "24"], ["Active Trips", "9"], ["Income", "₹4.2L"], ["Expenses", "₹1.8L"]];
-  const rows = [["T-1042", "Innova", "HYD → VJA", "Running"], ["T-1041", "Dzire", "VJA → RJY", "Done"], ["T-1040", "Tempo", "HYD → TNI", "Done"], ["T-1039", "Ertiga", "RJY → VZG", "Pending"]];
-  return (
-    <div className="fleet-wrap" aria-hidden="true"><div className="fleet">
-      <aside>
-        <b>Fleet<br />Management</b>
-        {nav.map((n, i) => <span key={n} className={i === 0 ? "on" : ""}>{n}</span>)}
-      </aside>
-      <section>
-        <header><strong>Dashboard</strong><em>Trips · Vehicles · Accounts</em></header>
-        <div className="f-stats">{stats.map(([k, v]) => <div key={k}><small>{k}</small><b>{v}</b></div>)}</div>
-        <div className="f-main">
-          <div className="f-table">
-            <div className="f-th"><span>Trip</span><span>Vehicle</span><span>Route</span><span>Status</span></div>
-            {rows.map((r) => (
-              <div className="f-tr" key={r[0]}>{r.map((c, i) => <span key={i} className={i === 3 ? `st ${c.toLowerCase()}` : ""}>{c}</span>)}</div>
-            ))}
-          </div>
-          <div className="f-chart">{[46, 62, 40, 78, 58, 88, 70].map((h, i) => <i key={i} style={{ height: `${h}%` }} />)}</div>
-        </div>
-      </section>
-    </div></div>
-  );
-}
-
-function BrowserFrame({ p, children }) {
-  return (
-    <div className="browser">
-      <div className="browser-bar">
-        <span className="dots"><i /><i /><i /></span>
-        <span className="addr">{hostOf(p.preview)}</span>
-      </div>
-      <div className="browser-view">{children}</div>
-    </div>
-  );
-}
-
-function PreviewModal({ p, onClose }) {
-  const [live, setLive] = useState(false);
-  useEffect(() => {
-    const k = (e) => e.key === "Escape" && onClose();
-    window.addEventListener("keydown", k);
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => { window.removeEventListener("keydown", k); document.body.style.overflow = prev; };
-  }, [onClose]);
-  return createPortal(
-    <div className="modal-back" onClick={onClose} role="dialog" aria-modal="true" aria-label={`${p.title} preview`}>
-      <div className="modal" onClick={(e) => e.stopPropagation()}>
-        <div className="modal-head">
-          <div><h3>{p.title}</h3><small>{p.kind}</small></div>
-          <div className="modal-actions">
-            <button type="button" className={`btn glass sm${live ? " on" : ""}`} onClick={() => setLive(!live)}>{live ? "Screenshot" : "Live preview"}</button>
-            <a className="btn dark sm" href={p.preview} target="_blank" rel="noopener noreferrer">Open site <FaExternalLinkAlt /></a>
-            <button type="button" className="round-btn" onClick={onClose} aria-label="Close"><FaTimes /></button>
-          </div>
-        </div>
-        <BrowserFrame p={p}>
-          {live ? (
-            <iframe className="live-frame" src={p.preview} title={`${p.title} live`} referrerPolicy="no-referrer" />
-          ) : (
-            <Shot p={p} w={1400} className="shot-lg" auto={p.mock !== "fleet"} fallback={p.mock === "fleet" ? <FleetMock /> : <ModalFallback p={p} />} />
-          )}
-        </BrowserFrame>
-        {live && <p className="frame-note">Site blank ga kanipisthe adi embedding allow cheyyatledu — “Open site” click cheyyandi.</p>}
-      </div>
-    </div>,
-    document.body
-  );
-}
-
 // ── Projects ────────────────────────────────────────────────────────────────
 function Projects() {
   const [open, setOpen] = useState(null);
@@ -503,36 +385,15 @@ function Projects() {
       <div className="grid-3">
         {PROJECTS.map((p, n) => (
           <Reveal key={p.title} delay={(n % 3) * 80} className="card project">
-            {p.preview ? (
-              <button type="button" className="thumb has-shot" onClick={() => setOpen(p)} aria-label={`Preview ${p.title}`}
-                style={{ background: `linear-gradient(135deg, ${p.grad[0]}, ${p.grad[1]})` }}>
-                <BrowserFrame p={p}>
-                  {p.mock === "fleet" ? (
-                    <Shot p={p} auto={false} fallback={<FleetMock />} />
-                  ) : (
-                    <>
-                      <div className="mock-body fallback">
-                        <div className="mock-icons">{p.Icons.map((I, k) => <I key={k} />)}</div>
-                        <b /><b className="s" />
-                      </div>
-                      <Shot p={p} />
-                    </>
-                  )}
-                </BrowserFrame>
-                <span className="view-badge">View interface</span>
-              </button>
-            ) : (
-              <div className="thumb" style={{ background: `linear-gradient(135deg, ${p.grad[0]}, ${p.grad[1]})` }}>
-                <div className="mock">
-                  <div className="mock-bar"><i /><i /><i /></div>
-                  <div className="mock-body">
-                    <div className="mock-icons">{p.Icons.map((I, k) => <I key={k} />)}</div>
-                    <b /><b className="s" />
-                  </div>
+            <div className="thumb" style={{ background: `linear-gradient(135deg, ${p.grad[0]}, ${p.grad[1]})` }}>
+              <div className="mock">
+                <div className="mock-bar"><i /><i /><i /></div>
+                <div className="mock-body">
+                  <div className="mock-icons">{p.Icons.map((I, k) => <I key={k} />)}</div>
+                  <b /><b className="s" />
                 </div>
               </div>
-            )}
-            <div className="project-body">
+            </div>
             <div className="project-top">
               <div><h3>{p.title}</h3><small>{p.kind}</small></div>
               {p.links[0] && (
@@ -551,9 +412,9 @@ function Projects() {
           </div>
           </Reveal>
         ))}
-      </div>
-      {open && <PreviewModal p={open} onClose={() => setOpen(null)} />}
-    </section>
+    </div>
+      { open && <PreviewModal p={open} onClose={() => setOpen(null)} /> }
+    </section >
   );
 }
 
